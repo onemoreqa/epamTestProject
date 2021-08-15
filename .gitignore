@@ -1,0 +1,13 @@
+IntelliJ IDEA
+target
+.idea
+bin
+*.iml
+.project
+.classpath
+.settings
+*.iws
+*.ipr
+infra/selenoid/logs
+infra/selenoid/video
+infra/jenkins_data
