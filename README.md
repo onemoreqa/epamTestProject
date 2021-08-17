@@ -1,23 +1,14 @@
-#### [Lesson from Java QA Engineer (by OTUS)][link]:
-#### Запуск окружения:
+#### Epam Project from OTUS:
+
+###### Проверка работы тестов на локали (Chrome):
+```bash
+mvn clean test -Dexecute.property=LOCAL
+```
+
+###### Запуск окружения ([описание][previousProject] ):
 ```bash
 cd infra && sudo ./start.sh && cd ..
 ```
-###### В результате запуска поднимутся докер контейнеры:
-- ngrok на порту 4551
-- настроенный jenkins на порту 8083 -> Мануалы [1][Jenkins-docker-compose] и [2][jenkinsTutorial]
-- selenoid(HUB) на порту 4444
-- selenoid-ui на порту 8080
-
-###### Проверено в окружении:
-- Ubuntu 18.04.1
-- IDEA 2021.2 RC
-- MAVEN 3.6.0
-- OpenJDK 1.8.0_292 (JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre)
-- Allure 2.13.2
-- Bash version 4.4.20(1)-release (x86_64-pc-linux-gnu)
-- Docker version 20.10.7, build f0df350 
-- Docker-compose version 1.27.4, build 40524192 (на младших версиях синтаксис может не отработать)
 
 ###### Удаленный запуск тестов:
 - Установить вебхук в GitHub и в Jenkins по адресу http://0.0.0.0:8083/ (логинимся как test/test)
@@ -102,17 +93,6 @@ allure generate target/allure-results/ --clean -o allure-report && allure open
 *Дополнительно: Тестовое покрытие может быть расширено для функциональности фильтрации
 
 ---
-###### cat ~/.profile:
-```bash
-export M2_HOME=/usr/share/maven
-JAVA_HOME=$(dirname $( readlink -f $(which java) ))
-JAVA_HOME=$(realpath "$JAVA_HOME"/../)
-export JAVA_HOME
-export ALLURE_HOME=/home/egorbunov/Desktop/allure-2.14.0
-PATH="$HOME/bin:$HOME/.local/bin:$PATH:$JAVA_HOME/bin:$M2_HOME/bin:$ALLURE_HOME/bin"
-export PATH
-
-```
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
@@ -120,3 +100,4 @@ export PATH
 [Jenkins-docker-compose]: <https://adamtheautomator.com/jenkins-docker/>
 [ngrok-docker-compose]: <https://github.com/shkoliar/docker-ngrok>
 [jenkinsTutorial]: <https://github.com/liberstein/JenkinsImageTutorial>
+[previousProject]: <https://github.com/liberstein/selenoidJenkinsDocker/blob/master/README.md>

@@ -1,28 +1,29 @@
-package epamTestProject.pages;
+package pages;
 
 
+import base.BasePage;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.io.ByteArrayInputStream;
-
-import static java.lang.String.format;
 
 
 /**
  * Sample page
  */
-public class HomePage extends Page {
+public class HomeBasePage extends BasePage {
 
     @FindBy(xpath = "//*[@href='/events']")
     public WebElement buttonEvents;
     @FindBy(xpath = "//a[contains(@href,'video')]")
     public WebElement buttonVideo;
 
-    public HomePage(WebDriver driver) {
+    public HomeBasePage(WebDriver driver) {
         super(driver);
     }
 

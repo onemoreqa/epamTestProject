@@ -1,4 +1,4 @@
-package epamTestProject.utils;
+package utils;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -6,17 +6,17 @@ import java.util.Properties;
 /**
  * Loads test suite configuration from resource files.
  */
-public class SuiteConfiguration {
+public class PropsConfiguration {
 
   private Properties properties;
 
-  public SuiteConfiguration() throws IOException {
+  public PropsConfiguration() throws IOException {
   	this(System.getProperty("application.properties"));
   }
 
-  public SuiteConfiguration(String fromResource) throws IOException {
+  public PropsConfiguration(String fromResource) throws IOException {
     properties = new Properties();
-    properties.load(SuiteConfiguration.class.getResourceAsStream(fromResource));
+    properties.load(PropsConfiguration.class.getResourceAsStream(fromResource));
   }
 
   public String getProperty(String name) {
