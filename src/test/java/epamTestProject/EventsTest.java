@@ -12,27 +12,24 @@ import pages.MainPage;
 @Execution(ExecutionMode.CONCURRENT)
 public class EventsTest extends BaseTest {
 
-    private MainPage homepage;
-    private EventsPage eventsPage;
-
     @Test
     @Feature("Просмотр предстоящих мероприятий")
     @Description("Тест проверяет, что на вкладке Events отображаются карточки предстоящих мероприятий. Количество карточек равно счетчику на кнопке Upcoming Events")
     public void testEventsCounter() {
-        homepage.openEvents();
+        homePage.openEvents();
         eventsPage.openUpcomingEventsTab();
         eventsPage.checkUpcomingCountersMatch();
     }
+
+    //@TODO нужно добавить прокрутку вниз, иначе будет ошибка вида
+    // org.opentest4j.AssertionFailedError: expected: <756> but was: <12>
 
     @Test
     @Feature("Просмотр прошедших событий")
     @Description("Тест проверяет, корректность данных в карточке на вкладке прошедших событий")
     public void testPastEventsCardData() {
-        homepage = new MainPage(driver);
-        homepage.open(baseUrl);
-        homepage.openEvents();
-        eventsPage = new EventsPage(driver);
+        homePage.openEvents();
         eventsPage.openPastEventsTab();
-        //eventsPage.assertUpcomingEventCardData();
+        eventsPage.checkPastCountersMatch();
     }
 }

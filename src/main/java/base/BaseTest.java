@@ -57,7 +57,7 @@ public class BaseTest {
         eventsPage = PageFactory.initElements(driver, EventsPage.class);
         videoPage = PageFactory.initElements(driver, VideoPage.class);
 
-        driver.get(baseUrl);
+        homePage.open(baseUrl);
     }
 
     @AfterEach

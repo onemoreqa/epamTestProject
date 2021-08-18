@@ -13,12 +13,13 @@ import java.util.List;
 
 public abstract class BasePage {
 
-  protected WebDriver driver;
+  public WebDriver driver;
   public WebDriverWait webDriverWait;
   public Logger logger = LogManager.getLogger(BaseTest.class);
 
-  public BasePage(WebDriver driver) {
-    this.driver = driver;
+  public BasePage(WebDriver webDriver) {
+    this.driver = webDriver;
+    webDriverWait = new WebDriverWait(driver, 15);
     PageFactory.initElements(driver, this);
   }
 

@@ -11,3 +11,4 @@ bin
 infra/selenoid/logs
 infra/selenoid/video
 infra/jenkins_data
+*.log

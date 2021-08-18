@@ -16,10 +16,10 @@ import java.io.ByteArrayInputStream;
 public class MainPage extends BasePage {
 
     @FindBy(xpath = "//*[@href='/events']")
-    public WebElement buttonEvents;
+    private WebElement buttonEvents;
 
     @FindBy(xpath = "//a[contains(@href,'video')]")
-    public WebElement buttonVideo;
+    private WebElement buttonVideo;
 
     @FindBy(css = "#onetrust-accept-btn-handler")
     private WebElement acceptCookiesButton;
@@ -34,7 +34,7 @@ public class MainPage extends BasePage {
     @Step
     public void acceptCookies() {
 
-        webDriverWait.until(ExpectedConditions.visibilityOf(cookiesBanner));
+        waitVisibilityOfElement(cookiesBanner);
         logger.info("Дожидаемся элемента: " + cookiesBanner);
 
         acceptCookiesButton.click();
@@ -57,7 +57,7 @@ public class MainPage extends BasePage {
         buttonEvents.click();
         Allure.addAttachment("Вкладка Events",
                 new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
-        logElementIsClicked(buttonEvents);
+        logger.info("Клик по элементу: " + buttonEvents);
     }
 
     @Step("Открыта вкладка Video")
@@ -66,6 +66,6 @@ public class MainPage extends BasePage {
         buttonVideo.click();
         Allure.addAttachment("Вкладка Video",
                 new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
-        logElementIsClicked(buttonVideo);
+        logger.info("Клик по элементу: " + buttonVideo);
     }
 }
