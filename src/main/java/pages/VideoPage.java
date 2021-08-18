@@ -3,12 +3,9 @@ package pages;
 import base.BasePage;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
-import org.hamcrest.core.SubstringMatcher;
 import org.junit.jupiter.api.Assertions;
-import org.junit.platform.commons.util.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
-
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
@@ -26,6 +23,23 @@ public class VideoPage extends BasePage {
     private WebElement resultFoundQA;
     @FindBy(xpath = "//div[contains(@class, 'evnt-talks-column')]")
     private List<WebElement> listOfCards;
+    @FindBy(css = "#filter_location")
+    private WebElement locationDropDown;
+    @FindBy(css = "#filter_language")
+    private WebElement languageDropDown;
+    @FindBy(css = "#filter_category")
+    private WebElement categoryDropDown;
+    @FindBy(xpath = "//*[@data-value='Belarus']")
+    private WebElement belarusItem;
+    @FindBy(xpath = "//*[@data-value='ENGLISH']")
+    private WebElement englishLanguageItem;
+    @FindBy(xpath = "//*[@data-value='Testing']")
+    private WebElement testingCategoryItem;
+    @FindBy(css = "div.evnt-toogle-filters-text:nth-child(1) > span:nth-child(1)")
+    private WebElement moreFilterButton;
+    @FindBy(xpath = "//span[contains(text(), 'Testing')]")
+    private WebElement resultFoundTesting;
+
 
     @Step("Поиск по ключевому слову")
     public void typeAndSearch() {
@@ -56,4 +70,49 @@ public class VideoPage extends BasePage {
                 new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
 
     }
+
+    @Step("Установка фильтров для поиска")
+    public void setFilter() {
+
+        waitVisibilityOfElement(moreFilterButton);
+        moreFilterButton.click();
+        logger.info("Дожидаемся элемента и кликаем: " + moreFilterButton);
+
+        waitIsClickable(locationDropDown);
+        locationDropDown.click();
+        belarusItem.click();
+        logger.info("Выбираем Беларусь в регионе: " + belarusItem);
+
+        languageDropDown.click();
+        englishLanguageItem.click();
+        logger.info("Выбираем ENGLISH: " + englishLanguageItem);
+
+        categoryDropDown.click();
+        testingCategoryItem.click();
+        logger.info("Выбираем категорию Testing " + testingCategoryItem);
+
+        Allure.addAttachment("Установка фильтров для поиска докладов",
+                new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
+    }
+
+    @Step("Валидация найденных видео после фильтрации")
+    public void validateFoundVideoItems() {
+
+        waitVisibilityOfElement(resultFoundTesting);
+        logger.info("Дожидаемся карточку со словом Testing: " + resultFoundTesting);
+
+        for (WebElement element : listOfCards) {
+
+            //@TODO тут требуется ACTION, чтоб по наведению на портрет спикера проверять региональность
+            // либо в отдельной вкладке и оттуда забирать Белорусь
+
+            Assertions.assertTrue(element.findElement(By.xpath("//p[contains(@class, 'language')]"))
+                    .getText()
+                    .contains("En"), "Язык не соответствует выбранному");
+            //logger.info("Доклад №" + listOfCards.indexOf(element) + ": " + listOfCards.get(listOfCards.indexOf(element)).getText());
+        }
+        logger.info("Отфильтрованные доклады на Английском языке");
+    }
+
+
 }

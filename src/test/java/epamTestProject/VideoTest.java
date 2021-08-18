@@ -11,6 +11,17 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 @Execution(ExecutionMode.CONCURRENT)
 public class VideoTest extends BaseTest {
 
+
+    @Test
+    @Feature("Фильтрация докладов по категориям")
+    @DisplayName("Фильтрация докладов по категориям")
+    @Description("Тест проверяет фильтрацию докладов")
+    public void videoFilterTest() {
+        homePage.openVideo();
+        videoPage.setFilter();
+        videoPage.validateFoundVideoItems();
+    }
+
     @Test
     @Feature("Поиск докладов по ключевому слову")
     @DisplayName("Поиск докладов по ключевому слову")
