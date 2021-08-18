@@ -5,11 +5,14 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.PageFactory;
+import pages.EventsPage;
+import pages.MainPage;
+import pages.VideoPage;
 import utils.PropsConfiguration;
 
 import java.util.concurrent.TimeUnit;
@@ -19,9 +22,12 @@ import java.util.concurrent.TimeUnit;
  */
 public class BaseTest {
 
-    public static Logger logger = LogManager.getLogger(BaseTest.class);
+    public Logger logger = LogManager.getLogger(BaseTest.class);
     protected static String baseUrl;
     protected static String execution;
+    public MainPage homePage;
+    public EventsPage eventsPage;
+    public VideoPage videoPage;
     protected WebDriver driver;
 
 
@@ -30,7 +36,6 @@ public class BaseTest {
         PropsConfiguration config = new PropsConfiguration();
         baseUrl = config.getProperty("epam.url");
         execution = System.getProperty("execute.property", "REMOTE");
-        logger.info("Начало прогона тестов в режиме {} ", execution);
     }
 
     @SneakyThrows
@@ -48,6 +53,11 @@ public class BaseTest {
         }
 
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        homePage = PageFactory.initElements(driver, MainPage.class);
+        eventsPage = PageFactory.initElements(driver, EventsPage.class);
+        videoPage = PageFactory.initElements(driver, VideoPage.class);
+
+        driver.get(baseUrl);
     }
 
     @AfterEach
@@ -56,10 +66,5 @@ public class BaseTest {
             logger.info("Завершение работы браузера \n");
             driver.quit();
         }
-    }
-
-    @AfterAll
-    public static void endOfTests() {
-        logger.info("Завершение прогона тестов в режиме {} \n\n\n\n", execution);
     }
 }
