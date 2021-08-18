@@ -1,12 +1,15 @@
 package pages;
 
 import base.BasePage;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
+import org.hamcrest.core.SubstringMatcher;
 import org.junit.jupiter.api.Assertions;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.junit.platform.commons.util.StringUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 public class VideoPage extends BasePage {
@@ -24,7 +27,7 @@ public class VideoPage extends BasePage {
     @FindBy(xpath = "//div[contains(@class, 'evnt-talks-column')]")
     private List<WebElement> listOfCards;
 
-    @Step
+    @Step("Поиск по ключевому слову")
     public void typeAndSearch() {
 
         waitVisibilityOfElement(searchField);
@@ -35,5 +38,22 @@ public class VideoPage extends BasePage {
 
         Assertions.assertNotSame(listOfCards.size(), 0, "Доклады не найдены");
         logger.info("Найдено докладов: " + listOfCards.size());
+        Allure.addAttachment("Найденные доклады",
+                new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
+    }
+
+    @Step("Проверка наличия поискового запроса в названии докладов")
+    public void validateVideoTitle() {
+
+        for (WebElement element : listOfCards) {
+
+            Assertions.assertTrue(element.findElement(By.xpath("//*[contains(@class, 'evnt-talk-name')]/h1/span"))
+                    .getText()
+                    .contains(query), "Доклады по ключевому слову " + query + " не найдены");
+            logger.info("Доклад №" + listOfCards.indexOf(element) + ": " + listOfCards.get(listOfCards.indexOf(element)).getText());
+        }
+        Allure.addAttachment("Проверка наличия поискового запроса в названии докладов",
+                new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
+
     }
 }

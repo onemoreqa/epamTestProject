@@ -14,6 +14,7 @@ import pages.EventsPage;
 import pages.MainPage;
 import pages.VideoPage;
 import utils.PropsConfiguration;
+import base.BasePage;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +26,7 @@ public class BaseTest {
     public Logger logger = LogManager.getLogger(BaseTest.class);
     protected static String baseUrl;
     protected static String execution;
+    public BasePage basePage;
     public MainPage homePage;
     public EventsPage eventsPage;
     public VideoPage videoPage;
@@ -44,11 +46,11 @@ public class BaseTest {
         DriverFactory driverFactory = new DriverFactory();
 
         if (execution.equals("LOCAL")) {
-            logger.info("Запуск тестов локально");
+            logger.info("Запуск тестов локально"); //@TODO надо override
             WebDriverManager.chromedriver().setup();
             driver = driverFactory.createDriver();
         } else {
-            logger.info("Запуск тестов удаленно");
+            logger.info("Запуск тестов удаленно"); //@TODO надо override
             driver = driverFactory.createRemoteDriver();
         }
 
@@ -63,7 +65,6 @@ public class BaseTest {
     @AfterEach
     public void quitDriver() {
         if (driver != null) {
-            logger.info("Завершение работы браузера \n");
             driver.quit();
         }
     }

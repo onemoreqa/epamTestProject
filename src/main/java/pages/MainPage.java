@@ -49,6 +49,7 @@ public class MainPage extends BasePage {
         driver.get(baseUrl);
         Allure.addAttachment("Главная страница Events",
                 new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
+        logger.info("Переход на страницу: " + baseUrl);
     }
 
     @Step("Открыта вкладка Events")

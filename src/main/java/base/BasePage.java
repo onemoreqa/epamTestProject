@@ -39,12 +39,4 @@ public abstract class BasePage {
     webDriverWait.until(ExpectedConditions.invisibilityOf(element));
   }
 
-  public void logElementIsNotDisplayed(WebElement element) {
-    logger.info("Element is not displayed: " + element);
-  }
-
-  public void logElementIsClicked(WebElement element) {
-    logger.info("Click completed on element: " + element);
-  }
-
 }
