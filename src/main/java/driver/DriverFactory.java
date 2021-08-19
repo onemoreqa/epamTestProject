@@ -1,6 +1,7 @@
 
 package driver;
 
+import org.junit.jupiter.api.TestInfo;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -26,7 +27,9 @@ public class DriverFactory {
         return driver.get();
     }
 
-    public RemoteWebDriver createRemoteDriver() throws MalformedURLException {
+    public RemoteWebDriver createRemoteDriver(TestInfo testInfo) throws MalformedURLException {
+
+        String selenoidVideoName = testInfo.getTestMethod().get().getName();
 
         DesiredCapabilities caps = new DesiredCapabilities();
             caps.setBrowserName(System.getProperty("browser_name", "chrome"));
@@ -39,8 +42,8 @@ public class DriverFactory {
             caps.setCapability("enableLog", true);
             caps.setCapability("verbose", true);
             caps.setCapability("log-level","DEBUG");
-            caps.setCapability("logName", "selenoid.log");
-            //caps.setCapability("logName", new String(BaseTest.fun(); + ".log"));
+            caps.setCapability("logName", selenoidVideoName.concat(".log"));
+            caps.setCapability("videoName", selenoidVideoName.concat(".mp4"));
             //caps.setCapability("headless", true);
 
         remoteDriver.set(new RemoteWebDriver(

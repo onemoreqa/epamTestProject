@@ -3,26 +3,14 @@ package epamTestProject;
 import base.BaseTest;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
-import org.junit.Rule;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.junit.rules.MethodRule;
-import org.junit.rules.TestWatchman;
-import org.junit.runners.model.FrameworkMethod;
-import pages.EventsPage;
-import pages.MainPage;
 
 @Execution(ExecutionMode.CONCURRENT)
 public class EventsTest extends BaseTest {
-
-    @Rule
-    public MethodRule watchman = new TestWatchman() {
-        public void starting(FrameworkMethod method) {
-            System.out.println("Starting test: " + method.getName());
-        }
-    };
 
     @Test
     @Feature("Просмотр предстоящих мероприятий")
@@ -42,8 +30,36 @@ public class EventsTest extends BaseTest {
     @DisplayName("Просмотр прошедших событий")
     @Description("Тест проверяет, корректность данных в карточке на вкладке прошедших событий")
     public void testPastEventsCardData() {
+
         homePage.openEvents();
         eventsPage.openPastEventsTab();
         eventsPage.checkPastCountersMatch();
+    }
+
+    @Test
+    @Feature("Валидация дат предстоящих мероприятий")
+    @DisplayName("Валидация дат предстоящих мероприятий")
+    @Description("Тест проверяет, что даты проведения мероприятий больше или равны текущей дате")
+    public void testUpcomingEventsDate() {
+
+        homePage.openEvents();
+        eventsPage.openPastEventsTab();
+        eventsPage.setFilter();
+        eventsPage.checkUpcomingEventDate();
+
+    }
+
+    @Test
+    @Feature("Просмотр прошедших мероприятий в Канаде")
+    @DisplayName("Просмотр прошедших мероприятий в Канаде")
+    @Description("Тест проверяет, корректность данных для карточек прошедших мероприятий в Канаде")
+    public void testPastCanadaEvents() {
+
+        homePage.openEvents();
+        eventsPage.openPastEventsTab();
+        eventsPage.setFilter();
+        Assertions.assertEquals(
+                eventsPage.getNumberOfEventsOnLink(), eventsPage.getNumberOfPastEventsOnPanels());
+
     }
 }

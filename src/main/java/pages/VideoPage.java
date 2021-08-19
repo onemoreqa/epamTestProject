@@ -133,7 +133,7 @@ public class VideoPage extends BasePage {
             driver.switchTo().window(tabs.get(listOfCards.indexOf(element) + 1));
 
             logger.info("Дожидаемся появления лэйбла на странице доклада №: " + listOfCards.indexOf(element) + locationLabel);
-            waitVisibilityOfElement(locationLabel);
+            waitVisibilityOfElement(locationLabel); //@TODO тут надо подгрузить страничку похоже
             Assertions.assertTrue(locationLabel
                     .getText()
                     .contains("Belarus"), "Регион не соответствует ожидаемому");

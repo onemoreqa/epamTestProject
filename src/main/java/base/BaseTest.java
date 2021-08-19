@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -42,7 +43,7 @@ public class BaseTest {
 
     @SneakyThrows
     @BeforeEach
-    public void initDriver()  {
+    public void initDriver(TestInfo testInfo)  {
         DriverFactory driverFactory = new DriverFactory();
 
         if (execution.equals("LOCAL")) {
@@ -50,8 +51,8 @@ public class BaseTest {
             WebDriverManager.chromedriver().setup();
             driver = driverFactory.createDriver();
         } else {
-            logger.info("Запуск тестов удаленно"); //@TODO надо override
-            driver = driverFactory.createRemoteDriver();
+            logger.info("Запуск тестов удаленно"); //
+            driver = driverFactory.createRemoteDriver(testInfo);
             driver.manage().window().setSize(new Dimension(1280, 1024));
         }
 

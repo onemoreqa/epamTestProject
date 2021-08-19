@@ -116,14 +116,10 @@
         <configuration>
           <filesets>
             <fileset>
-              <directory></directory>
+              <directory>.</directory>
               <includes>
-                <include>**/*.log</include>
+                <include>logs.log</include>
               </includes>
-              <excludes>
-                <exclude>**/important.log</exclude>
-                <exclude>**/another-important.log</exclude>
-              </excludes>
               <followSymlinks>false</followSymlinks>
             </fileset>
           </filesets>
