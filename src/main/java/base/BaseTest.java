@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import pages.EventsPage;
@@ -32,7 +33,6 @@ public class BaseTest {
     public VideoPage videoPage;
     protected WebDriver driver;
 
-
     @BeforeAll
     public static void loadParams() throws Throwable {
         PropsConfiguration config = new PropsConfiguration();
@@ -52,9 +52,11 @@ public class BaseTest {
         } else {
             logger.info("Запуск тестов удаленно"); //@TODO надо override
             driver = driverFactory.createRemoteDriver();
+            driver.manage().window().setSize(new Dimension(1280, 1024));
         }
 
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+
         homePage = PageFactory.initElements(driver, MainPage.class);
         eventsPage = PageFactory.initElements(driver, EventsPage.class);
         videoPage = PageFactory.initElements(driver, VideoPage.class);

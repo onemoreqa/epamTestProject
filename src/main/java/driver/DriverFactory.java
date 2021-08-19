@@ -34,10 +34,13 @@ public class DriverFactory {
             caps.setCapability("enableVNC", true);
             caps.setCapability("screenResolution", "1280x1024");
             caps.setCapability("enableVideo", true);
+            caps.setCapability("videoScreenSize", "1280x1024");
+            caps.setCapability("videoFrameRate", 12);
             caps.setCapability("enableLog", true);
             caps.setCapability("verbose", true);
             caps.setCapability("log-level","DEBUG");
             caps.setCapability("logName", "selenoid.log");
+            //caps.setCapability("logName", new String(BaseTest.fun(); + ".log"));
             //caps.setCapability("headless", true);
 
         remoteDriver.set(new RemoteWebDriver(

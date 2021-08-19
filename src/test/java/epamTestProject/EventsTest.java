@@ -3,15 +3,26 @@ package epamTestProject;
 import base.BaseTest;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
+import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.rules.MethodRule;
+import org.junit.rules.TestWatchman;
+import org.junit.runners.model.FrameworkMethod;
 import pages.EventsPage;
 import pages.MainPage;
 
 @Execution(ExecutionMode.CONCURRENT)
 public class EventsTest extends BaseTest {
+
+    @Rule
+    public MethodRule watchman = new TestWatchman() {
+        public void starting(FrameworkMethod method) {
+            System.out.println("Starting test: " + method.getName());
+        }
+    };
 
     @Test
     @Feature("Просмотр предстоящих мероприятий")

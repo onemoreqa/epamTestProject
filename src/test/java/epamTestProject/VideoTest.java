@@ -16,7 +16,7 @@ public class VideoTest extends BaseTest {
     @Feature("Фильтрация докладов по категориям")
     @DisplayName("Фильтрация докладов по категориям")
     @Description("Тест проверяет фильтрацию докладов")
-    public void videoFilterTest() {
+    public void videoFilterTest() throws InterruptedException {
         homePage.openVideo();
         videoPage.setFilter();
         videoPage.validateFoundVideoItems();

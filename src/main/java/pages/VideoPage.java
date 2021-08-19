@@ -5,8 +5,10 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class VideoPage extends BasePage {
@@ -39,6 +41,10 @@ public class VideoPage extends BasePage {
     private WebElement moreFilterButton;
     @FindBy(xpath = "//span[contains(text(), 'Testing')]")
     private WebElement resultFoundTesting;
+    @FindBy(xpath = "//*[@class='evnt-talk-details location evnt-now-past-talk']//span")
+    private  WebElement locationLabel;
+    @FindBy(xpath = "//*[@class='evnt-talk-details language evnt-now-past-talk']//span")
+    private  WebElement languageLabel;
 
 
     @Step("Поиск по ключевому слову")
@@ -96,20 +102,50 @@ public class VideoPage extends BasePage {
     }
 
     @Step("Валидация найденных видео после фильтрации")
-    public void validateFoundVideoItems() {
+    public void validateFoundVideoItems() throws InterruptedException {
 
+        String originalHandle = driver.getWindowHandle();
         waitVisibilityOfElement(resultFoundTesting);
         logger.info("Дожидаемся карточку со словом Testing: " + resultFoundTesting);
 
+        logger.info("Открываем карточки в разных вкладках и возвращаемся к начальной");
+        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
         for (WebElement element : listOfCards) {
 
-            //@TODO тут требуется ACTION, чтоб по наведению на портрет спикера проверять региональность
-            // либо в отдельной вкладке и оттуда забирать Белорусь
+            Actions newTab = new Actions(driver);
+            newTab.sendKeys(Keys.SPACE)
+                    .keyDown(Keys.CONTROL)
+                    .click(element)
+                    .keyUp(Keys.CONTROL)
+                    .build()
+                    .perform();
 
-            Assertions.assertTrue(element.findElement(By.xpath("//p[contains(@class, 'language')]"))
+            driver.switchTo().window(tabs.get(0));
+        }
+
+        tabs = new ArrayList<String>(driver.getWindowHandles());
+        System.out.println(tabs);
+        System.out.println(tabs.size());
+
+        for (WebElement element : listOfCards) {
+
+            logger.info("Переключаемся на следующую вкладку");
+            driver.switchTo().window(tabs.get(listOfCards.indexOf(element) + 1));
+
+            logger.info("Дожидаемся появления лэйбла на странице доклада №: " + listOfCards.indexOf(element) + locationLabel);
+            waitVisibilityOfElement(locationLabel);
+            Assertions.assertTrue(locationLabel
                     .getText()
-                    .contains("En"), "Язык не соответствует выбранному");
-            //logger.info("Доклад №" + listOfCards.indexOf(element) + ": " + listOfCards.get(listOfCards.indexOf(element)).getText());
+                    .contains("Belarus"), "Регион не соответствует ожидаемому");
+
+            Assertions.assertTrue(languageLabel
+                    .getText()
+                    .contains("ENGLISH"), "Язык не соответствует выбранному");
+
+            logger.info("Доклад проверен");
+            Allure.addAttachment("Проверка на регион спикера в докладе №" + listOfCards.indexOf(element),
+                    new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
+
         }
         logger.info("Отфильтрованные доклады на Английском языке");
     }
