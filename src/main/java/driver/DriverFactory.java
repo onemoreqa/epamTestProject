@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -31,6 +32,15 @@ public class DriverFactory {
 
         String selenoidVideoName = testInfo.getTestMethod().get().getName();
 
+        ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.addArguments("--allowed-ips='0.0.0.0, 127.0.0.1, 127.0.1.1'");
+/*           chromeOptions.addArguments("disable-infobars"); // disabling infobars
+            chromeOptions.addArguments("--disable-extensions"); // disabling extensions
+            chromeOptions.addArguments("--disable-gpu"); // applicable to windows os only
+            chromeOptions.addArguments("--no-sandbox"); // Bypass OS security model
+            chromeOptions.addArguments("--whitelisted-ips='127.0.0.1'");*/
+            System.out.println(chromeOptions);
+
         DesiredCapabilities caps = new DesiredCapabilities();
             caps.setBrowserName(System.getProperty("browser_name", "chrome"));
             caps.setVersion(System.getProperty("browser_version", "86.0"));
@@ -44,6 +54,7 @@ public class DriverFactory {
             caps.setCapability("log-level","DEBUG");
             caps.setCapability("logName", selenoidVideoName.concat(".log"));
             caps.setCapability("videoName", selenoidVideoName.concat(".mp4"));
+            caps.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
             //caps.setCapability("headless", true);
 
         remoteDriver.set(new RemoteWebDriver(

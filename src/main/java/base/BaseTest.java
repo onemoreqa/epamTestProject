@@ -55,10 +55,10 @@ public class BaseTest {
     @BeforeEach
     public void initDriver(TestInfo testInfo)  {
 
-        //Добавим ссылку на видео: http://0.0.0.0:8080/video/testPastCanadaEvents.mp4
+        //Добавим в Allure ссылку на видео: http://0.0.0.0:8080/video/<TestMethodName>.mp4
         String testMethod = testInfo.getTestMethod().get().getName();
         Allure.addAttachment("ВИДЕО", "text/plain", "http://0.0.0.0:8080/video/".concat(testMethod).concat(".mp4"));
-        //можно было сделать как СБЕР -> https://habr.com/ru/company/sberbank/blog/359302/
+        //еще сделал как СБЕР через @Link -> https://habr.com/ru/company/sberbank/blog/359302/ , но это держится на постоянстве неймингов тестовых методов
 
         DriverFactory driverFactory = new DriverFactory();
 

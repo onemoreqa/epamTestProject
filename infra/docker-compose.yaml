@@ -13,7 +13,7 @@ services:
       - "$PWD/selenoid/logs:/opt/selenoid/logs"
     environment:
       - OVERRIDE_VIDEO_OUTPUT_DIR=$PWD/selenoid/video
-    command: ["-conf", "/etc/selenoid/browsers.json", "-video-output-dir", "/opt/selenoid/video", "-log-output-dir", "/opt/selenoid/logs", "-capture-driver-logs"]
+    command: ["-conf", "/etc/selenoid/browsers.json", "-video-output-dir", "/opt/selenoid/video", "-log-output-dir", "/opt/selenoid/logs", "-capture-driver-logs", "-save-all-logs", "-timeout", "10m"]
   ngrok:
     image: shkoliar/ngrok:latest
     container_name: ngrok

@@ -5,6 +5,7 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -35,6 +36,17 @@ public class EventsPage extends BasePage {
     private WebElement locationDropDown;
     @FindBy(css = ".evnt-cards-container:nth-child(1) .evnt-event-card .date")
     public WebElement eventDate;
+
+    @FindBy(xpath =  "//*[@class=\"evnt-details-cell language-cell\"]//span")
+    public WebElement cardLanguage;
+    @FindBy(xpath = "//*[@class=\"evnt-event-name\"]//span")
+    public WebElement cardEventName;
+    @FindBy(xpath = "//*[@class=\"evnt-dates-cell dates\"]//span[@class=\"date\"]")
+    public WebElement cardEventDate;
+    @FindBy(xpath = "//*[@class=\"evnt-dates-cell dates\"]//span[@class=\"status reg-close\"]")
+    public WebElement cardEventRegStatus;
+    @FindBy(xpath = "//*[@class=\"speakers-wrapper\"]")
+    public WebElement cardEventSpeakersWrapper;
 
     public EventsPage(WebDriver driver) {
         super(driver);
@@ -99,10 +111,35 @@ public class EventsPage extends BasePage {
         logger.info("Число предстоящих событий совпало с счетчиком");
     }
 
-    @Step("Проверка количества карточек в прошедших событиях")
+    @Step("Проверка содержимого карточек в прошедших событиях")
     public void checkPastCountersMatch() {
+
+        Assertions.assertTrue(cardLanguage
+                .isDisplayed(), "На карточке события не отображается язык");
+        logger.info("На карточке прошедшего события есть информация об языке");
+
+        Assertions.assertTrue(cardEventName
+                .isDisplayed(), "На карточке события не отображается название события");
+        logger.info("На карточке прошедшего события есть информация о названии события");
+
+        Assertions.assertTrue(cardEventDate
+                .isDisplayed(), "На карточке события не отображается период проведения события");
+        logger.info("На карточке прошедшего события есть информация о периоде проведения события");
+
+        Assertions.assertTrue(cardEventRegStatus
+                .isDisplayed(), "На карточке события не отображается статус регистрации события");
+        logger.info("На карточке прошедшего события есть информация о статусе регистрации события");
+
+        Assertions.assertTrue(cardEventSpeakersWrapper
+                .isDisplayed(), "На карточке события не отображается иконка спикеров события");
+        logger.info("На карточке прошедшего события присутствует иконка спикеров события");
+
+        scrollDown();
         Assertions.assertEquals(getNumberOfEventsOnLink(), getNumberOfPastEventsOnPanels());
-        logger.info("Число прошедших событий совпало с счетчиком");
+
+        Allure.addAttachment("Проскролл до самого низа в прошедших событиях",
+                new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
+        logger.info("Проскроллили до самого низа страницы прошедших событий. Кол-во событий совпало.");
     }
 
     @Step("Проверка количества событий в счетчике")
@@ -121,12 +158,27 @@ public class EventsPage extends BasePage {
         return number;
     }
 
-    @Step("Проверка количества прошедших событий на панели")
-    public int getNumberOfPastEventsOnPanels() {
+    //@Step("Проверка количества прошедших событий на панели")
+    public int getNumberOfPastEventsOnPanels()  {
+
         int number = driver.findElements(By.cssSelector("div.evnt-event-card")).size();
-        logger.info("На панель выведено прошедших событий: " + number);
+        //logger.info("На панель выведено прошедших событий: " + number);
 
         return number;
+    }
+
+    @Step("Проскролл вниз для загрузки всех прошедших событий")
+    public void scrollDown() {
+        String js = "window.scrollTo(0, document.body.scrollHeight);";
+
+        int infoCardCount = getNumberOfEventsOnLink();
+        int visibleCardCount = 0;
+
+        while (infoCardCount != visibleCardCount) {
+            visibleCardCount = getNumberOfPastEventsOnPanels();
+            ((JavascriptExecutor) driver).executeScript(js);
+        }
+
     }
 
 }

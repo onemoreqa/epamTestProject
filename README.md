@@ -1,41 +1,26 @@
 #### Epam Project from OTUS:
 
-###### Проверка работы тестов на локали (Chrome):
-```bash
-mvn clean test -Dexecute.property=LOCAL
-```
-
 ###### Запуск окружения ([описание][previousProject] ):
 ```bash
 cd infra && sudo ./start.sh && cd ..
 ```
 
-###### Удаленный запуск тестов:
-- Установить вебхук в GitHub и в Jenkins по адресу http://0.0.0.0:8083/ (логинимся как test/test)
-- Идём в джобу = WebHok Pipeline и запускаем тест, под хромом 86.0
-
-###### Локальный запуск тестов:
-Настройки:
+###### Проверка настроек для запуска в Selenoid:
 ```bash
 source ~/.profile
 cat /etc/hosts   # убеждаемся что хосты selenoid и jenkins резолвятся и доступны
 ```
-Валидация Jenkinsfile:
+
+###### Варианты запуска тестов:
 ```bash
-curl --user test:test -X POST -F "jenkinsfile=<Jenkinsfile" http://jenkins:8080/pipeline-model-converter/validate
-curl --user test:test -X POST -F "jenkinsfile=<Jenkinsfile" http://0.0.0.0:8083/pipeline-model-converter/validate
-```
-запуск после настроек:
-```bash
-mvn clean test # важно соответствие модели в файле infra/selenoid/config/browsers.json + присутствие контейнера браузера!
-mvn clean test -Dbrowser_name=chrome -Dbrowser_version=86.0
+mvn clean test -Dexecute.property=LOCAL # увидеть на локали (без окружения, под Chrome)
+mvn clean test # с поднятым окружением в Selenoid
+mvn clean test -Dbrowser_name=chrome -Dbrowser_version=86.0 # с поднятым окружением в Selenoid и передачей браузера
 ```
 
-###### Allure report (IDEA -> maven/Plugins/allure -> allure:serve):
-```bash
-source ~/.profile
-allure generate target/allure-results/ --clean -o allure-report && allure open
-```
+###### Настройки триггера по пушу в gitHub:
+- Установить вебхук в GitHub и в Jenkins по адресу http://0.0.0.0:8083/ (логинимся как test/test)
+- Идём в джобу = WebHok Pipeline и запускаем тест, под хромом 86.0
 
 ###### Цель:
 - Необходимо построить фреймворк для автоматизации Е2Е тестирования сайта с обязательным тестовым покрытием.
@@ -64,7 +49,7 @@ allure generate target/allure-results/ --clean -o allure-report && allure open
 2) Просмотр карточек мероприятий:
 - Пользователь переходит на вкладку events
 - Пользователь нажимает на Past Events
-- На странице отображаются карточки предстоящих мероприятий.
+- На странице отображаются карточки прошедших мероприятий.
 - В карточке указана информация о мероприятии: язык, название мероприятия, дата мероприятия, информация о регистрации, список спикеров // Минимально достаточное - проверить одну карточку. В идеале все что отображаются.
 
 3) Валидация дат предстоящих мероприятий:
@@ -85,7 +70,7 @@ allure generate target/allure-results/ --clean -o allure-report && allure open
 - Пользователь выбирает: Category – Testing, Location – Belarus, Language – English, На вкладке фильтров
 - На странице отображаются карточки соответствующие правилам выбранных фильтров
 
-6)Поиск докладов по ключевому слову:
+6) Поиск докладов по ключевому слову:
 - Пользователь переходит на вкладку VIDEO - Talks Library
 - Пользователь вводит ключевое слово QA в поле поиска
 - На странице отображаются доклады, содержащие в названии ключевое слово поиска
