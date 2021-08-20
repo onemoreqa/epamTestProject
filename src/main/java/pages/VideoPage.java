@@ -5,10 +5,8 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 public class VideoPage extends BasePage {
@@ -104,36 +102,20 @@ public class VideoPage extends BasePage {
     @Step("Валидация найденных видео после фильтрации")
     public void validateFoundVideoItems() throws InterruptedException {
 
-        String originalHandle = driver.getWindowHandle();
         waitVisibilityOfElement(resultFoundTesting);
         logger.info("Дожидаемся карточку со словом Testing: " + resultFoundTesting);
 
-        logger.info("Открываем карточки в разных вкладках и возвращаемся к начальной");
-        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-        for (WebElement element : listOfCards) {
+        List<WebElement> cards = driver.findElements(By.xpath("//div[contains(@class, 'evnt-talks-column')]"));
 
-            Actions newTab = new Actions(driver);
-            newTab.sendKeys(Keys.SPACE)
-                    .keyDown(Keys.CONTROL)
-                    .click(element)
-                    .keyUp(Keys.CONTROL)
-                    .build()
-                    .perform();
+        int i;
+        // @TODO беда на последней карточке, она не грузится никаким образом. Как вариант - уменьшить длину списка карт на 1
+        for (i=0; i<Integer.valueOf(cards.size() - 1); i++) {
 
-            driver.switchTo().window(tabs.get(0));
-        }
+            Thread.sleep(2000);
+            cards.get(i).click();
 
-        tabs = new ArrayList<String>(driver.getWindowHandles());
-        System.out.println(tabs);
-        System.out.println(tabs.size());
-
-        for (WebElement element : listOfCards) {
-
-            logger.info("Переключаемся на следующую вкладку");
-            driver.switchTo().window(tabs.get(listOfCards.indexOf(element) + 1));
-
-            logger.info("Дожидаемся появления лэйбла на странице доклада №: " + listOfCards.indexOf(element) + locationLabel);
-            waitVisibilityOfElement(locationLabel); //@TODO тут надо подгрузить страничку похоже
+            logger.info("Дожидаемся появления лэйбла на странице доклада ");
+            waitVisibilityOfElement(locationLabel);
             Assertions.assertTrue(locationLabel
                     .getText()
                     .contains("Belarus"), "Регион не соответствует ожидаемому");
@@ -142,13 +124,16 @@ public class VideoPage extends BasePage {
                     .getText()
                     .contains("ENGLISH"), "Язык не соответствует выбранному");
 
-            logger.info("Доклад проверен");
-            Allure.addAttachment("Проверка на регион спикера в докладе №" + listOfCards.indexOf(element),
+            Thread.sleep(1000);
+            Allure.addAttachment("Проверка на регион спикера в докладе №" + i,
                     new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
+            logger.info("Успешно проверили доклад №" + i);
+
+            driver.navigate().back();
+            cards = driver.findElements(By.xpath("//div[contains(@class, 'evnt-talks-column')]"));
+
 
         }
-        logger.info("Отфильтрованные доклады на Английском языке");
     }
-
 
 }
