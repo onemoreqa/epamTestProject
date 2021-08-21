@@ -4,11 +4,14 @@ import base.BaseTest;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
+import io.qameta.allure.Severity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+
+import static io.qameta.allure.SeverityLevel.*;
 
 @Execution(ExecutionMode.CONCURRENT)
 public class EventsTest extends BaseTest {
@@ -17,6 +20,7 @@ public class EventsTest extends BaseTest {
     @Feature("Просмотр предстоящих мероприятий")
     @DisplayName("Просмотр предстоящих мероприятий")
     @Description("Тест проверяет, что на вкладке Events отображаются карточки предстоящих мероприятий. Количество карточек равно счетчику на кнопке Upcoming Events")
+    @Severity(CRITICAL)
     @Link(name = "Video", url = "http://0.0.0.0:8080/video/testEventsCounter.mp4")
     public void testEventsCounter() {
 
@@ -29,6 +33,7 @@ public class EventsTest extends BaseTest {
     @Feature("Просмотр прошедших событий")
     @DisplayName("Просмотр прошедших событий")
     @Description("Тест проверяет, корректность данных в карточке на вкладке прошедших событий")
+    @Severity(NORMAL)
     @Link(name = "Video", url = "http://0.0.0.0:8080/video/testPastEventsCardData.mp4")
     public void testPastEventsCardData() {
 
@@ -38,11 +43,12 @@ public class EventsTest extends BaseTest {
     }
 
 
-    // @TODO не оч понятно, как тест должен отработать, т.к. предстоящие события обычно не отображаются
+    // @TODO не оч понятно, как тест должен отработать, т.к. предстоящие события обычно не отображаются, кроме одного
     @Test
     @Feature("Валидация дат предстоящих мероприятий")
     @DisplayName("Валидация дат предстоящих мероприятий")
     @Description("Тест проверяет, что даты проведения мероприятий больше или равны текущей дате")
+    @Severity(TRIVIAL)
     @Link(name = "Video", url = "http://0.0.0.0:8080/video/testUpcomingEventsDate.mp4")
     public void testUpcomingEventsDate() {
 
@@ -56,6 +62,7 @@ public class EventsTest extends BaseTest {
     @Feature("Просмотр прошедших мероприятий в Канаде")
     @DisplayName("Просмотр прошедших мероприятий в Канаде")
     @Description("Тест проверяет, корректность данных для карточек прошедших мероприятий в Канаде")
+    @Severity(NORMAL)
     @Link(name = "Video", url = "http://0.0.0.0:8080/video/testPastCanadaEvents.mp4")
     public void testPastCanadaEvents() {
 

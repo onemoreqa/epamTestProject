@@ -1,10 +1,8 @@
 package base;
 
-import com.google.common.io.Files;
 import driver.DriverFactory;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Allure;
-import io.qameta.allure.Attachment;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,22 +11,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import pages.EventsPage;
 import pages.MainPage;
 import pages.VideoPage;
 import utils.PropsConfiguration;
-import base.BasePage;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-
-import static com.sun.activation.registries.LogSupport.log;
 
 /**
  * Base class for all the JUnit-based test classes

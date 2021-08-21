@@ -6,6 +6,7 @@ import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
+
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
@@ -25,10 +26,14 @@ public class VideoPage extends BasePage {
     private List<WebElement> listOfCards;
     @FindBy(css = "#filter_location")
     private WebElement locationDropDown;
+    @FindBy(css = "#filter_talk_level")
+    private WebElement talkLevelDropDown;
     @FindBy(css = "#filter_language")
     private WebElement languageDropDown;
     @FindBy(css = "#filter_category")
     private WebElement categoryDropDown;
+    @FindBy(xpath = "//*[@data-value='For All']")
+    private WebElement forAllItem;
     @FindBy(xpath = "//*[@data-value='Belarus']")
     private WebElement belarusItem;
     @FindBy(xpath = "//*[@data-value='ENGLISH']")
@@ -43,6 +48,8 @@ public class VideoPage extends BasePage {
     private  WebElement locationLabel;
     @FindBy(xpath = "//*[@class='evnt-talk-details language evnt-now-past-talk']//span")
     private  WebElement languageLabel;
+    @FindBy(xpath = "//*[@class='evnt-no-results']")
+    private  WebElement noFoundVideos;
 
 
     @Step("Поиск по ключевому слову")
@@ -96,6 +103,30 @@ public class VideoPage extends BasePage {
         logger.info("Выбираем категорию Testing " + testingCategoryItem);
 
         Allure.addAttachment("Установка фильтров для поиска докладов",
+                new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
+    }
+
+    @Step("Установка фильтров для поиска докладов с учетом уровня слушателя")
+    public void setFilterExtra() {
+
+        waitIsClickable(talkLevelDropDown);
+        talkLevelDropDown.click();
+        forAllItem.click();
+        logger.info("Выбираем сложность доклада для всех: " + forAllItem);
+
+        Allure.addAttachment("Установка фильтров для поиска докладов с учетом уровня слушателя",
+                new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
+    }
+
+    @Step("Проверка фильтрации видео с учетом уровня слушателя")
+    public void validateFoundVideoExtra() {
+        waitVisibilityOfElement(noFoundVideos);
+        boolean isSameSearchError = (noFoundVideos.getText()).contentEquals("No Results Found");
+        logger.info("Ошибка поиска докладов при использовании уровня слушателя");
+
+        Assertions.assertFalse(isSameSearchError,
+                                 "Не удалось найти доклады после добавления фильтра по уровню сложности");
+        Allure.addAttachment("Найденные доклады с учетом уровня слушателя",
                 new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
     }
 

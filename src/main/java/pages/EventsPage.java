@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EventsPage extends BasePage {
