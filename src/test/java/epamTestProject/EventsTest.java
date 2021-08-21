@@ -37,6 +37,8 @@ public class EventsTest extends BaseTest {
         eventsPage.checkPastCountersMatch();
     }
 
+
+    // @TODO не оч понятно, как тест должен отработать, т.к. предстоящие события обычно не отображаются
     @Test
     @Feature("Валидация дат предстоящих мероприятий")
     @DisplayName("Валидация дат предстоящих мероприятий")
@@ -45,8 +47,7 @@ public class EventsTest extends BaseTest {
     public void testUpcomingEventsDate() {
 
         homePage.openEvents();
-        eventsPage.openPastEventsTab();
-        eventsPage.setFilter();
+        eventsPage.openUpcomingEventsTab();
         eventsPage.checkUpcomingEventDate();
 
     }

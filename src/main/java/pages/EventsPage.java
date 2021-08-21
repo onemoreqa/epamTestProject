@@ -5,7 +5,6 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -95,12 +94,18 @@ public class EventsPage extends BasePage {
     @Step("Проверка даты ближайшего мероприятия")
     public void checkUpcomingEventDate() {
         String upcomingEventDataString = eventDate.getText();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
-        LocalDate upcomingEventData = LocalDate.parse(upcomingEventDataString, formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
+
+        String lastEventDay = upcomingEventDataString.substring(8);
+        logger.info("Дата окончания предстоящего мероприятия = " + LocalDate.parse(lastEventDay, formatter));
+
         LocalDate today = LocalDate.now();
-        boolean isUpcomingEvent = today.isBefore(upcomingEventData);
+        boolean isUpcomingEvent = today.isBefore(LocalDate.parse(lastEventDay, formatter));
         assertTrue(isUpcomingEvent);
-        logger.info("Проверили, что дата предстоящего события больше текущей даты");
+        logger.info("Проверили, что дата окончания предстоящего события больше текущей даты");
+
+        Allure.addAttachment("Дата окончания предстоящего события больше текущей даты\"",
+                new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
     }
 
     // @TODO тут бы нужен switch case (PAST / FUTURE events)
