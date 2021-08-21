@@ -18,6 +18,7 @@ import pages.MainPage;
 import pages.VideoPage;
 import utils.PropsConfiguration;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,14 +29,13 @@ public class BaseTest {
     public Logger logger = LogManager.getLogger(BaseTest.class);
     protected static String baseUrl;
     protected static String execution;
-    public BasePage basePage;
     public MainPage homePage;
     public EventsPage eventsPage;
     public VideoPage videoPage;
     protected WebDriver driver;
 
     @BeforeAll
-    public static void loadParams() throws Throwable {
+    public static void loadParams() throws IOException {
         PropsConfiguration config = new PropsConfiguration();
         baseUrl = config.getProperty("epam.url");
         execution = System.getProperty("execute.property", "REMOTE");

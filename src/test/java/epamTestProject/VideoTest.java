@@ -22,7 +22,7 @@ public class VideoTest extends BaseTest {
     @Description("Тест проверяет фильтрацию докладов")
     @Severity(BLOCKER)
     @Link(name = "Video", url = "http://0.0.0.0:8080/video/testFilterVideo.mp4")
-    public void testFilterVideo() throws InterruptedException {
+    public void testFilterVideo() {
         homePage.openVideo();
         videoPage.setFilter();
         videoPage.validateFoundVideoItems();
@@ -49,7 +49,7 @@ public class VideoTest extends BaseTest {
     @Link(name = "Video", url = "http://0.0.0.0:8080/video/testSearchVideo.mp4")
     public void testSearchVideo() {
         homePage.openVideo();
-        videoPage.typeAndSearch();
+        videoPage.findTalksByQuery();
         videoPage.validateVideoTitle();
     }
 }

@@ -33,12 +33,6 @@ public class DriverFactory {
 
         ChromeOptions chromeOptions = new ChromeOptions();
             chromeOptions.addArguments("--allowed-ips='0.0.0.0, 127.0.0.1, 127.0.1.1'");
-/*           chromeOptions.addArguments("disable-infobars"); // disabling infobars
-            chromeOptions.addArguments("--disable-extensions"); // disabling extensions
-            chromeOptions.addArguments("--disable-gpu"); // applicable to windows os only
-            chromeOptions.addArguments("--no-sandbox"); // Bypass OS security model
-            chromeOptions.addArguments("--whitelisted-ips='127.0.0.1'");*/
-            System.out.println(chromeOptions);
 
         DesiredCapabilities caps = new DesiredCapabilities();
             caps.setBrowserName(System.getProperty("browser_name", "chrome"));

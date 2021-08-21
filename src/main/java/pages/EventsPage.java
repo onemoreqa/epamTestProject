@@ -164,11 +164,9 @@ public class EventsPage extends BasePage {
         return number;
     }
 
-    //@Step("Проверка количества прошедших событий на панели")
     public int getNumberOfPastEventsOnPanels()  {
 
         int number = driver.findElements(By.cssSelector("div.evnt-event-card")).size();
-        //logger.info("На панель выведено прошедших событий: " + number);
 
         return number;
     }

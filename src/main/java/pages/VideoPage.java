@@ -53,7 +53,7 @@ public class VideoPage extends BasePage {
 
 
     @Step("Поиск по ключевому слову")
-    public void typeAndSearch() {
+    public void findTalksByQuery() {
 
         waitVisibilityOfElement(searchField);
         searchField.sendKeys(query);
@@ -131,7 +131,7 @@ public class VideoPage extends BasePage {
     }
 
     @Step("Валидация найденных видео после фильтрации")
-    public void validateFoundVideoItems() throws InterruptedException {
+    public void validateFoundVideoItems() {
 
         waitVisibilityOfElement(resultFoundTesting);
         logger.info("Дожидаемся карточку со словом Testing: " + resultFoundTesting);
@@ -142,7 +142,6 @@ public class VideoPage extends BasePage {
         // @TODO беда на последней карточке, она не грузится никаким образом. Как вариант - уменьшить длину списка карт на 1
         for (i=0; i<Integer.valueOf(cards.size() - 1); i++) {
 
-            Thread.sleep(2000);
             cards.get(i).click();
 
             logger.info("Дожидаемся появления лэйбла на странице доклада ");
@@ -155,7 +154,6 @@ public class VideoPage extends BasePage {
                     .getText()
                     .contains("ENGLISH"), "Язык не соответствует выбранному");
 
-            Thread.sleep(1000);
             Allure.addAttachment("Проверка на регион спикера в докладе №" + i,
                     new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
             logger.info("Успешно проверили доклад №" + i);
