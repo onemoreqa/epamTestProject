@@ -1,27 +1,24 @@
 #### [Lesson from Java QA Engineer (by OTUS)][link]:
-#### Для запуска тестов в Intellij Idea:
-```bash
-Установить версию OpenJDK > 11
-File -> Project Structure -> Modules -> Language level to 8
-File -> Settings -> Build, Execution, Deployment -> Compiler -> Java Compiler -> 8
-```
+#### Запуск тестов: mvn clean test
+
 #### Цель:
-- Создать проект тематики Калькулятор (или другой тематики, на ваш выбор) 
-- Написать нереализованные методы (например: возведение в степень, корень из числа, на ваш выбор) 
-- Написать тесты для этих методов, которые вначале при запуске будут иметь статус failed. 
-- Далее реализовать методы и запустить тесты снова. 
-- Результат: повторно тесты успешно отработают со статусом passed.
+- Создать тестовый проект на Cucumber Framework. 
+- Написать несколько сценариев в feature файле для тестирования Web страницы (web ресурс на ваш выбор). 
+- Реализовать методы шагов сценариев.
 
-###### По желанию можно сменить тематику сервиса, основная задача попробовать создать разные типы (сильная, слабая, инверсия контроля) зависимости классов.
-
----
 #### Критерии оценки:
-- Тесты для реализованных методов успешно пройдены.
-
+- Тестовые сценарии успешно проверяют функционал.
 ---
-#### Ссылки:
-- [Создание шаблона Spring][spring]
+#### №1
+- Откройте сайт https://otus.ru :
+- перейти во вкладку "Контакты" и проверить адрес: 125167, г. Москва, Нарышкинская аллея., д. 5, стр. 2, тел. +7 499 938-92-02;
+---
+#### №2
+- Перейти на сайт теле2 страница https://msk.tele2.ru/shop/number :
+- ввести в поле "поиск номера" 97 и начать поиск;
+- дождаться появления номеров.
+---
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
-[spring]: <https://start.spring.io/>
+[link]: <https://otus.ru/learning/102096/>
